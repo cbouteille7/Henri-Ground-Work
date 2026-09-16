@@ -1,0 +1,851 @@
+<title>Ground Work</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  :root{
+    --bg:#eef0ea;
+    --surface:#ffffff;
+    --surface-2:#f7f8f3;
+    --ink:#1b211d;
+    --muted:#5e6b62;
+    --line:rgba(27,33,29,0.14);
+    --line-strong:rgba(27,33,29,0.28);
+    --accent:#e2571c;
+    --accent-ink:#fffaf6;
+    --accent-2:#1f6e52;
+    --good:#2e8b57;
+    --good-bg:rgba(46,139,87,0.12);
+    --warn:#b5790f;
+    --warn-bg:rgba(216,154,31,0.16);
+    --bad:#c6483a;
+    --shadow:0 1px 2px rgba(20,24,20,0.06), 0 8px 24px -12px rgba(20,24,20,0.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121a15;
+      --surface:#1b241d;
+      --surface-2:#212c23;
+      --ink:#eaf0e7;
+      --muted:#98a99a;
+      --line:rgba(234,240,231,0.13);
+      --line-strong:rgba(234,240,231,0.26);
+      --accent:#ff7a3d;
+      --accent-ink:#1a1006;
+      --accent-2:#59c093;
+      --good:#4fbf85;
+      --good-bg:rgba(79,191,133,0.16);
+      --warn:#e8b93a;
+      --warn-bg:rgba(232,185,58,0.16);
+      --bad:#e2685a;
+      --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121a15;
+    --surface:#1b241d;
+    --surface-2:#212c23;
+    --ink:#eaf0e7;
+    --muted:#98a99a;
+    --line:rgba(234,240,231,0.13);
+    --line-strong:rgba(234,240,231,0.26);
+    --accent:#ff7a3d;
+    --accent-ink:#1a1006;
+    --accent-2:#59c093;
+    --good:#4fbf85;
+    --good-bg:rgba(79,191,133,0.16);
+    --warn:#e8b93a;
+    --warn-bg:rgba(232,185,58,0.16);
+    --bad:#e2685a;
+    --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Work Sans", ui-sans-serif, system-ui, sans-serif;
+    padding-inline:16px;
+    padding-block:0 48px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  h1,h2,h3{font-family:"Anton", "Work Sans", sans-serif; font-weight:400; letter-spacing:0.01em; text-wrap:balance; margin:0;}
+  .num{font-family:"Space Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+  button{font-family:inherit; cursor:pointer;}
+  .visually-hidden{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+  .wrap{max-width:920px; margin:0 auto;}
+
+  /* ---------- Header ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:var(--bg);
+    padding-block:14px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{max-width:920px; margin:0 auto; display:flex; align-items:center; gap:12px;}
+  .brand{display:flex; align-items:center; gap:10px; flex:1; min-width:0;}
+  .brand-mark{
+    width:34px; height:34px; flex:none; border-radius:8px;
+    background:var(--accent); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .brand-text h1{font-size:20px; line-height:1;}
+  .brand-text .sub{font-size:11px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; margin-top:3px;}
+  .streak{
+    display:flex; align-items:center; gap:6px;
+    background:var(--surface); border:1px solid var(--line); border-radius:999px;
+    padding:6px 12px; box-shadow:var(--shadow); flex:none;
+  }
+  .streak .num{font-size:15px; font-weight:700;}
+  .streak svg{width:16px; height:16px; color:var(--accent);}
+  .iconbtn{
+    flex:none; width:36px; height:36px; border-radius:9px; border:1px solid var(--line);
+    background:var(--surface); color:var(--muted); display:flex; align-items:center; justify-content:center;
+  }
+  .iconbtn:hover{color:var(--ink); border-color:var(--line-strong);}
+  .iconbtn svg{width:18px; height:18px;}
+
+  /* ---------- Phase strip ---------- */
+  .phase-row{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
+  .phase-chip{
+    font-size:11px; letter-spacing:0.05em; text-transform:uppercase;
+    padding:5px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted);
+  }
+  .phase-chip.active{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:600;}
+
+  /* ---------- Week nav ---------- */
+  .week-nav{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:22px; margin-bottom:12px;
+  }
+  .week-nav h2{font-size:15px; font-family:"Work Sans"; font-weight:600; color:var(--muted); letter-spacing:0.02em;}
+  .week-nav .arrows{display:flex; gap:6px;}
+  .arrow-btn{
+    width:32px; height:32px; border-radius:8px; border:1px solid var(--line); background:var(--surface);
+    display:flex; align-items:center; justify-content:center; color:var(--ink);
+  }
+  .arrow-btn svg{width:16px; height:16px;}
+  .arrow-btn:disabled{opacity:0.35; cursor:default;}
+
+  .week-strip{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:8px;
+  }
+  @media (max-width:640px){
+    .week-strip{grid-auto-flow:column; grid-auto-columns:88px; grid-template-columns:none; overflow-x:auto; padding-bottom:4px; margin-inline:-16px; padding-inline:16px; scroll-snap-type:x proximity;}
+    .day-card{scroll-snap-align:start;}
+  }
+  .day-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:10px 8px; text-align:center; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    position:relative;
+  }
+  .day-card.is-today{border-color:var(--accent);}
+  .day-card.is-selected{background:var(--accent); border-color:var(--accent);}
+  .day-card.is-selected .dow, .day-card.is-selected .dnum, .day-card.is-selected .dtype{color:var(--accent-ink);}
+  .day-card.is-selected .ring-track{stroke:rgba(255,255,255,0.35);}
+  .day-card .dow{font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+  .day-card .dnum{font-family:"Space Mono"; font-size:13px; color:var(--muted);}
+  .day-card .ring-wrap{width:34px; height:34px; position:relative; margin-block:2px;}
+  .day-card .ring-wrap svg{width:100%; height:100%; transform:rotate(-90deg);}
+  .day-card .ring-icon{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--ink);}
+  .day-card.is-selected .ring-icon{color:var(--accent-ink);}
+  .day-card .ring-icon svg{width:15px; height:15px;}
+  .day-card .dtype{font-size:10.5px; color:var(--ink); font-weight:600; line-height:1.15;}
+
+  /* ---------- Detail panel ---------- */
+  .detail{margin-top:22px;}
+  .detail-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px;}
+  .detail-head h2{font-size:26px;}
+  .detail-head .meta{font-size:12.5px; color:var(--muted); margin-top:4px;}
+  .day-progress{
+    display:flex; align-items:center; gap:8px; flex:none; padding-top:4px;
+  }
+  .day-progress .bar{width:64px; height:6px; border-radius:999px; background:var(--line); overflow:hidden;}
+  .day-progress .bar > i{display:block; height:100%; background:var(--good); border-radius:999px;}
+  .day-progress .num{font-size:12px; color:var(--muted);}
+
+  .block{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:18px 18px 6px; margin-bottom:16px; box-shadow:var(--shadow);
+  }
+  .block-head{display:flex; align-items:center; gap:12px; margin-bottom:4px;}
+  .block-icon{
+    width:38px; height:38px; border-radius:10px; flex:none;
+    background:var(--surface-2); color:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .block-icon svg{width:19px; height:19px;}
+  .block-title{font-size:17px; font-weight:700;}
+  .block-sub{font-size:12.5px; color:var(--muted); margin-top:1px;}
+
+  .section{margin-top:16px; padding-top:14px; border-top:1px solid var(--line);}
+  .section:first-of-type{margin-top:14px;}
+  .section-title{
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent-2);
+    font-weight:700; margin-bottom:8px;
+  }
+  .item{
+    display:flex; align-items:flex-start; gap:11px;
+    padding-block:9px; border-bottom:1px solid var(--line);
+  }
+  .item:last-child{border-bottom:none;}
+  .check{
+    flex:none; width:22px; height:22px; margin-top:1px; border-radius:6px; border:1.5px solid var(--line-strong);
+    background:var(--surface); display:flex; align-items:center; justify-content:center; color:transparent;
+    appearance:none; -webkit-appearance:none; padding:0;
+  }
+  .check svg{width:13px; height:13px;}
+  .check:checked{background:var(--good); border-color:var(--good); color:#fff;}
+  .item.done .iname{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line-strong);}
+  .item-body{flex:1; min-width:0;}
+  .iname{font-size:14.5px; font-weight:600; line-height:1.3;}
+  .icue{font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.4;}
+  .demo-link{font-size:11.5px; color:var(--accent-2); text-decoration:none; font-weight:700; display:block; margin-top:5px;}
+  .demo-link:hover{text-decoration:underline;}
+  .callout{
+    display:flex; gap:8px; align-items:flex-start; background:var(--warn-bg); color:var(--ink);
+    font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:10px; margin:12px 0 2px;
+  }
+  .callout svg{width:15px; height:15px; flex:none; margin-top:1px; color:var(--warn);}
+  .irx{
+    font-family:"Space Mono"; font-size:11.5px; color:var(--accent-2); flex:none; margin-top:2px; text-align:right; max-width:36%;
+  }
+
+  .note-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .note-card svg{width:30px; height:30px; color:var(--accent-2); margin-bottom:8px;}
+  .note-card h3{font-size:18px; margin-bottom:6px;}
+  .note-card p{font-size:13.5px; color:var(--muted); max-width:46ch; margin:0 auto;}
+
+  .mark-row{display:flex; justify-content:flex-end; padding-block:12px 14px;}
+  .mark-btn{
+    border:1px solid var(--line-strong); background:var(--surface-2); color:var(--ink);
+    font-size:12.5px; font-weight:600; padding:8px 14px; border-radius:999px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .mark-btn svg{width:14px; height:14px;}
+  .mark-btn.done{background:var(--good-bg); border-color:transparent; color:var(--good);}
+
+  /* ---------- Roadmap ---------- */
+  .roadmap{margin-top:30px;}
+  .roadmap summary{
+    list-style:none; cursor:pointer; display:flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:600; color:var(--muted); letter-spacing:0.02em; padding-block:6px;
+  }
+  .roadmap summary::-webkit-details-marker{display:none;}
+  .roadmap summary svg{width:14px; height:14px; transition:transform 0.15s;}
+  .roadmap[open] summary svg{transform:rotate(90deg);}
+  .kit-list{display:flex; flex-direction:column; gap:12px; margin-top:12px;}
+  .kit-item{display:flex; gap:10px; align-items:flex-start;}
+  .kit-item svg{width:17px; height:17px; flex:none; margin-top:2px; color:var(--accent-2);}
+  .kit-item b{font-size:13.5px; font-weight:700; display:block;}
+  .kit-item .note{font-size:12px; color:var(--muted); display:block; margin-top:1px; line-height:1.4;}
+  .phase-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px;}
+  @media (max-width:640px){.phase-grid{grid-template-columns:1fr;}}
+  .phase-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow:var(--shadow);
+  }
+  .phase-card.current{border-color:var(--accent);}
+  .phase-card .pk{font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); font-weight:700;}
+  .phase-card h4{font-size:16px; margin-top:4px;}
+  .phase-card p{font-size:12.5px; color:var(--muted); margin-top:6px; line-height:1.45;}
+  .schedule-note{font-size:12.5px; color:var(--muted); line-height:1.6; margin-top:14px;}
+
+  /* ---------- Settings ---------- */
+  .backdrop{
+    position:fixed; inset:0; background:rgba(10,14,10,0.4); backdrop-filter:blur(2px);
+    display:flex; align-items:flex-end; justify-content:center; z-index:50; padding:0;
+  }
+  @media (min-width:640px){.backdrop{align-items:center;}}
+  .sheet{
+    background:var(--surface); width:100%; max-width:420px; border-radius:18px 18px 0 0;
+    padding:20px; box-shadow:var(--shadow); border:1px solid var(--line); border-bottom:none;
+  }
+  @media (min-width:640px){.sheet{border-radius:18px; border-bottom:1px solid var(--line);}}
+  .sheet h3{font-size:17px; margin-bottom:14px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.04em;}
+  .field input[type="date"]{
+    width:100%; padding:10px 12px; border-radius:9px; border:1px solid var(--line-strong);
+    background:var(--surface-2); color:var(--ink); font-family:inherit; font-size:14px;
+  }
+  .field-hint{font-size:12px; color:var(--muted); margin-top:6px; line-height:1.4;}
+  .sheet-actions{display:flex; gap:8px; margin-top:6px;}
+  .btn{
+    flex:1; padding:11px; border-radius:10px; border:1px solid var(--line-strong); background:var(--surface-2);
+    color:var(--ink); font-weight:600; font-size:13.5px;
+  }
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+
+  footer{max-width:920px; margin:36px auto 0; font-size:11.5px; color:var(--muted); text-align:center; line-height:1.6;}
+</style>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="ic-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/></symbol>
+    <symbol id="ic-run" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="5" r="1.6" fill="currentColor" stroke="none"/><path d="M12.5 8.5 9 10l-2 4M12.5 8.5 15 12l4 1.5M15 12l-2.5 3.5L15 20M9 10l1.5 5.5L7 20"/></symbol>
+    <symbol id="ic-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.2 15.8 10l-1.5 4.6h-4.6L8.2 10 12 7.2Z"/><path d="M12 3v4.2M12 20.8V16.6M4.8 8l3.4 2M15.8 10l3.4-2M8.7 14.6l-2.4 3.6M15.3 14.6l2.4 3.6"/></symbol>
+    <symbol id="ic-speed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 9l4 5 8-11"/><path d="M15 3h6v6"/></symbol>
+    <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></symbol>
+    <symbol id="ic-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4a3 3 0 0 0 3 5M17 5h3a3 3 0 0 1-3 5M10 18h4M12 14v4M8 21h8"/></symbol>
+    <symbol id="ic-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.8 1.8 0 0 0 .36 1.98l.06.06a2.17 2.17 0 1 1-3.07 3.07l-.06-.06a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.65V20a2.17 2.17 0 0 1-4.34 0v-.09a1.8 1.8 0 0 0-1.18-1.65 1.8 1.8 0 0 0-1.98.36l-.06.06a2.17 2.17 0 1 1-3.07-3.07l.06-.06a1.8 1.8 0 0 0 .36-1.98 1.8 1.8 0 0 0-1.65-1.1H2a2.17 2.17 0 0 1 0-4.34h.09a1.8 1.8 0 0 0 1.65-1.18 1.8 1.8 0 0 0-.36-1.98l-.06-.06A2.17 2.17 0 1 1 6.4 3.53l.06.06a1.8 1.8 0 0 0 1.98.36H8.5a1.8 1.8 0 0 0 1.1-1.65V2a2.17 2.17 0 0 1 4.34 0v.09a1.8 1.8 0 0 0 1.1 1.65 1.8 1.8 0 0 0 1.98-.36l.06-.06a2.17 2.17 0 1 1 3.07 3.07l-.06.06a1.8 1.8 0 0 0-.36 1.98V8.5a1.8 1.8 0 0 0 1.65 1.1H22a2.17 2.17 0 0 1 0 4.34h-.09a1.8 1.8 0 0 0-1.65 1.1Z"/></symbol>
+    <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12.5 9.5 18 20 6"/></symbol>
+    <symbol id="ic-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 4 16 12 8 20"/></symbol>
+    <symbol id="ic-arrow-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 4 7 12 15 20"/></symbol>
+    <symbol id="ic-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 4 17 12 9 20"/></symbol>
+    <symbol id="ic-flame" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.5 2c.6 3-2.5 4.4-2.5 7.2 0 1 .4 1.8 1 2.3-1.6-.2-2.7-1.6-2.7-3.2C6 10.8 5 13 5 15.2 5 19 8.2 22 12 22s7-2.7 7-6.4c0-3.4-2.1-5.6-3.4-7.6-.3 1.6-1.1 2.6-2.1 3.1.5-2.7-.4-5-1-9.1Z"/></symbol>
+    <symbol id="ic-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 22 20H2Z"/><path d="M12 10v4"/><circle cx="12" cy="17.3" r="0.6" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="ic-play" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 8.3v7.4l6.5-3.7Z"/></symbol>
+    <symbol id="ic-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4" y="8" width="16" height="13" rx="2"/><path d="M4 12h16"/></symbol>
+    <symbol id="ic-check-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12.5 9.5 18 20 6"/></symbol>
+    <symbol id="ic-dot" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="5"/></symbol>
+  </defs>
+</svg>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark"><svg width="19" height="19"><use href="#ic-bolt"/></svg></div>
+      <div class="brand-text">
+        <h1>Ground Work</h1>
+        <div class="sub" id="phase-sub">Solo athletic development</div>
+      </div>
+    </div>
+    <div class="streak" title="Consecutive training days completed">
+      <svg><use href="#ic-flame"/></svg>
+      <span class="num" id="streak-num">0</span>
+    </div>
+    <button class="iconbtn" id="settings-btn" aria-label="Settings"><svg><use href="#ic-gear"/></svg></button>
+  </div>
+  <div class="wrap">
+    <div class="phase-row" id="phase-row"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <details class="roadmap" id="kit-info">
+    <summary><svg><use href="#ic-chevron"/></svg> Your Kit — What You'll Need</summary>
+    <div class="kit-list">
+      <div class="kit-item"><svg><use href="#ic-dot"/></svg><div><b>A backpack</b><span class="note">Loaded with a few books, for weighted core work</span></div></div>
+      <div class="kit-item"><svg><use href="#ic-dot"/></svg><div><b>A set of stairs</b><span class="note">Step-downs, stair bounds, and a rail to anchor the band</span></div></div>
+      <div class="kit-item"><svg><use href="#ic-dot"/></svg><div><b>A mat or towel</b><span class="note">For anything on the ground — planks, dead bugs, stretches</span></div></div>
+      <div class="kit-item"><svg><use href="#ic-dot"/></svg><div><b>A resistance band</b><span class="note">Anchor it to the stair rail or a door for core and stretching work</span></div></div>
+      <div class="kit-item"><svg><use href="#ic-dot"/></svg><div><b>A soccer ball</b><span class="note">Every Tuesday, plus one drill on Core & Plyo days</span></div></div>
+      <div class="kit-item"><svg><use href="#ic-dot"/></svg><div><b>2 markers</b><span class="note">Just a pair of shoes or water bottles you already own — used for dribbling and sprint drills</span></div></div>
+    </div>
+    <p class="schedule-note">Same six things all 12 weeks — nothing new to gather, and nothing you don't already have around the house.</p>
+  </details>
+
+  <div class="week-nav">
+    <h2 id="week-label">This Week</h2>
+    <div class="arrows">
+      <button class="arrow-btn" id="week-prev" aria-label="Previous week"><svg><use href="#ic-arrow-l"/></svg></button>
+      <button class="arrow-btn" id="week-today">Today</button>
+      <button class="arrow-btn" id="week-next" aria-label="Next week"><svg><use href="#ic-arrow-r"/></svg></button>
+    </div>
+  </div>
+
+  <div class="week-strip" id="week-strip"></div>
+
+  <div class="detail" id="detail"></div>
+
+  <details class="roadmap" id="roadmap">
+    <summary><svg><use href="#ic-chevron"/></svg> 12-Week Roadmap</summary>
+    <div class="phase-grid" id="phase-grid"></div>
+    <p class="schedule-note">Mon / Wed / Fri — Core &amp; Plyo circuit (rotates through four templates so it never repeats back-to-back). Tuesday — pre-practice ball mastery, rotating through three skill focuses. Thursday — a short, max-effort explosive speed session (acceleration and elastic power) plus a rotating agility or flexibility block; this is deliberately not a conditioning session, since MLS Next practices and games already supply that. Saturday flexes for game day or active recovery; Sunday is full rest. After Week 12, the program holds at Phase 3 intensity as your maintenance level.</p>
+  </details>
+
+  <footer>Built for solo, no-weight training — bodyweight, a loaded backpack, stairs, a mat, a resistance band and a soccer ball. Progress is saved automatically on this device.</footer>
+</div>
+
+<div class="backdrop" id="settings-backdrop" style="display:none">
+  <div class="sheet">
+    <h3>Program settings</h3>
+    <div class="field">
+      <label for="start-date-input">Program start date</label>
+      <input type="date" id="start-date-input">
+      <div class="field-hint">This sets Week 1, Day 1. Change it if you want the 12-week block to start on a different Monday.</div>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn" id="settings-cancel">Cancel</button>
+      <button class="btn primary" id="settings-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================== DATA ============================== */
+
+  var CORE_TEMPLATES = {
+    A: { name:"Landing & Power", blurb:"Plyometric power and soft-landing mechanics.", sections:[
+      { title:"Activate", items:[
+        { name:"Ankle Pogo Hops", cue:"Quiet feet, quick ground contact, tall posture.", rx:["2 × 20 sec","2 × 30 sec","3 × 30 sec"] },
+        { name:"Glute Bridge March", cue:"Press through your heels — don’t let the hips drop.", rx:["2 × 10/side","2 × 12/side","3 × 12/side"] }
+      ]},
+      { title:"Power", items:[
+        { name:"Stair Step-Down to Stick", cue:"Control the knee over the toes, land silent.", rx:["2 × 8/leg","3 × 8/leg","3 × 10/leg"] },
+        { name:"Broad Jump to Stick", cue:"Land quiet in an athletic position, hold 2 sec.", rx:["3 × 5","4 × 6","4 × 8"] },
+        { name:"Lateral Bound (Skater Hop)", cue:"Push off the outside leg, stick the landing before the next rep.", rx:["3 × 6/side, hold each","4 × 6/side, quicker","4 × 8/side, continuous"] }
+      ]},
+      { title:"Core", items:[
+        { name:"Front Plank", cue:"Brace like you’re about to take a hit — no sagging hips.", rx:["3 × 30 sec","3 × 45 sec","3 × 60 sec"] },
+        { name:"Backpack Dead Bug", cue:"Hold the loaded backpack at your chest, low back stays flat on the mat.", rx:["2 × 10/side","3 × 10/side","3 × 12/side"] },
+        { name:"Side Plank Reach-Under", cue:"Keep the hips stacked and lifted through the whole reach.", rx:["2 × 8/side","3 × 8/side","3 × 10/side"] }
+      ]},
+      { title:"Cool Down", items:[
+        { name:"Kneeling Hip Flexor Stretch", cue:"Tuck the hips under, feel it in the front of the hip.", rx:["30 sec/side","30 sec/side","30 sec/side"] },
+        { name:"Standing Quad Stretch", cue:"Use the wall for balance, knees stay together.", rx:["30 sec/side","30 sec/side","30 sec/side"] }
+      ]}
+    ]},
+    B: { name:"Single-Leg Strength", blurb:"Single-leg stability and injury-resistant hips and knees.", sections:[
+      { title:"Activate", items:[
+        { name:"Lateral Squat Walks", cue:"Stay low the whole way, knees track over toes.", rx:["2 × 10 steps/dir","2 × 15 steps/dir","3 × 15 steps/dir"] },
+        { name:"World’s Greatest Stretch", cue:"Reach the elbow to the instep, then rotate tall.", rx:["5/side","6/side","8/side"] }
+      ]},
+      { title:"Power", items:[
+        { name:"Single-Leg Stair Reach", cue:"Keep the hips level, slow and controlled.", rx:["2 × 6 reaches/leg","3 × 6/leg","3 × 8/leg"] },
+        { name:"Single-Leg Squat to Backpack Tap", cue:"Hold the loaded backpack at your chest for balance, control the knee.", rx:["2 × 6/leg","3 × 8/leg","3 × 10/leg"] },
+        { name:"Single-Leg Hop Series", cue:"Forward, forward, stick — quiet landing every time.", rx:["3 × 4/leg","3 × 6/leg","4 × 6/leg continuous"] }
+      ]},
+      { title:"Core", items:[
+        { name:"Bird-Dog Hold", cue:"Reach long through fingers and toes, keep the hips square.", rx:["2 × 8/side (3 sec hold)","3 × 8/side","3 × 10/side"] },
+        { name:"Band Pallof Press", cue:"Anchor the band to a stair rail or door, resist the twist.", rx:["2 × 10/side","3 × 10/side","3 × 12/side"] },
+        { name:"Hollow Body Hold", cue:"Low back pressed down, ribs tucked.", rx:["3 × 15 sec","3 × 25 sec","3 × 35 sec"] }
+      ]},
+      { title:"Cool Down", items:[
+        { name:"Standing Hamstring Stretch", cue:"Hinge at the hip, back stays flat.", rx:["30 sec/side","30 sec/side","30 sec/side"] },
+        { name:"Figure-4 Glute Stretch", cue:"On the mat, gently pull the knee toward the chest.", rx:["30 sec/side","30 sec/side","30 sec/side"] }
+      ]}
+    ]},
+    C: { name:"Anti-Rotation & Reactive", blurb:"Rotational core control and reaction speed.", sections:[
+      { title:"Activate", items:[
+        { name:"Inchworm to Shoulder Tap", cue:"Hips stay level during the shoulder tap.", rx:["2 × 6","2 × 8","3 × 8"] },
+        { name:"High Knees in Place", cue:"Drive the knees up, land on the mid-foot.", rx:["2 × 20 sec","2 × 30 sec","3 × 30 sec"] }
+      ]},
+      { title:"Power", items:[
+        { name:"Reactive Ball Drop &amp; Catch", cue:"Self-toss the ball, catch low in an athletic stance.", rx:["2 × 10","2 × 12","3 × 12"] },
+        { name:"Lateral Shuffle Stair Touch", cue:"Stay low, quick feet, touch the bottom stair each side.", rx:["3 × 20 sec","3 × 30 sec","4 × 30 sec"] },
+        { name:"Squat Jump to Stick", cue:"Phase 1–2: squat jump. Phase 3: full tuck jump — knees to chest, stick the landing.", rx:["3 × 5 (squat jump)","3 × 6 (squat jump)","4 × 8 (tuck jump)"] }
+      ]},
+      { title:"Core", items:[
+        { name:"Backpack Russian Twist", cue:"Feet hover if you can, rotate from the ribs.", rx:["2 × 16 total","3 × 20 total","3 × 24 total"] },
+        { name:"Plank Shoulder Taps", cue:"Hips stay square — fight the rotation.", rx:["2 × 16 total","3 × 20 total","3 × 24 total"] },
+        { name:"Standing Band Chop", cue:"Anchor the band to a stair rail, chop across the body from a strong base.", rx:["2 × 10/side","3 × 10/side","3 × 12/side"] }
+      ]},
+      { title:"Cool Down", items:[
+        { name:"Seated Forward Fold", cue:"Long spine, hinge from the hips.", rx:["30–45 sec","30–45 sec","30–45 sec"] },
+        { name:"Cross-Body Shoulder Stretch", cue:"Gentle pull across the chest, relax the shoulder down.", rx:["30 sec/side","30 sec/side","30 sec/side"] }
+      ]}
+    ]},
+    D: { name:"Posterior Chain & Hip Power", blurb:"Hamstrings, glutes and explosive hip extension.", sections:[
+      { title:"Activate", items:[
+        { name:"Glute Bridge", cue:"Squeeze glutes at the top, avoid arching the low back.", rx:["2 × 12","3 × 12","3 × 15"] },
+        { name:"Leg Swings (holding stair rail)", cue:"Controlled range, front-back then side-side.", rx:["10/side each way","12/side each way","15/side each way"] }
+      ]},
+      { title:"Power", items:[
+        { name:"Single-Leg RDL Reach", cue:"Flat back, hinge at the hip, reach toward the opposite foot.", rx:["2 × 8/leg","3 × 8/leg","3 × 10/leg"] },
+        { name:"Stair Bounds", cue:"Bound up two at a time, walk down to recover.", rx:["3 × 8 stairs","4 × 10 stairs","5 × 12 stairs"] },
+        { name:"Broad Jump Series", cue:"Three continuous jumps, then stick the last one.", rx:["3 × 3 jumps","4 × 3 jumps","4 × 4 jumps"] }
+      ]},
+      { title:"Core", items:[
+        { name:"Superman Hold with Flutter", cue:"Lift chest and thighs slightly, small controlled flutter.", rx:["2 × 20 sec","3 × 20 sec","3 × 30 sec"] },
+        { name:"Backpack Sit-Up to Press", cue:"Press the backpack overhead at the top of the sit-up.", rx:["2 × 10","3 × 10","3 × 12"] },
+        { name:"Side Plank Hip Dips", cue:"Small controlled dip, don’t let the hips sag on the way down.", rx:["2 × 10/side","3 × 10/side","3 × 12/side"] }
+      ]},
+      { title:"Cool Down", items:[
+        { name:"Butterfly Stretch", cue:"Let gravity pull the knees down, relax.", rx:["45 sec","45 sec","45 sec"] },
+        { name:"Calf Stretch on Stair Edge", cue:"Heel drops below the step, gentle stretch.", rx:["30 sec/side","30 sec/side","30 sec/side"] }
+      ]}
+    ]}
+  };
+  var CORE_ORDER = ["A","B","C","D"];
+
+  var FAST_TWITCH = {
+    prime: [
+      { name:"Jog + High Knees + Butt Kicks + Lateral Shuffle", cue:"30 sec easy jog, 20 sec high knees, 20 sec butt kicks, 20 sec lateral shuffle each way.", rx:["~2 min","~2 min","~2 min"] },
+      { name:"Pogo Jumps", cue:"Quick, quiet ground contacts — stiff ankles, not deep knee bend.", rx:["2 × 10","2 × 10","2 × 12"] },
+      { name:"A-Skip / A-March", cue:"Drive the knee up, punch the ground away underneath you.", rx:["2 × 5/leg","2 × 6/leg","2 × 8/leg"] },
+      { name:"Progressive Build-Up Runs", cue:"Set 2 markers (shoes or water bottles) 10 yards apart — you'll reuse these all session, just moving them closer or farther apart. Two relaxed accelerations, building from easy to fast.", rx:["2 × 10 yd @ 70–85%","2 × 10 yd @ 75–90%","2 × 10 yd @ 80–95%"] }
+    ],
+    firstStep: [
+      { name:"5-Yard Sprint — varied starts", cue:"Move your markers to 5 yards apart. Rotate starts: standing, split-stance, lateral, facing away then turn. First three steps aggressive, stay low.", rx:["2 reps, 40 sec rest","2 reps, 35 sec rest","3 reps, 30 sec rest"] },
+      { name:"10-Yard Sprint — varied starts", cue:"Move them back out to 10 yards. Same varied starts, drive all the way through at full speed.", rx:["3 reps, 45 sec rest","4 reps, 40 sec rest","4 reps, 35 sec rest"] }
+    ],
+    elastic: [
+      { name:"Pogo → Broad Jump → 10-Yard Sprint", cue:"5 pogo jumps, then 3 broad jumps, then sprint to your 10-yard marker immediately. Springy and quick, not maximal effort.", rx:["2 rounds, 45 sec rest","3 rounds, 40 sec rest","3 rounds, 35 sec rest"] }
+    ]
+  };
+
+  var BALL_FOCI = [
+    { key:"close", name:"Close Control & Turns", drills:[
+      { name:"Sole Rolls", cue:"Roll the ball back and forth under your sole, stay on the balls of your feet.", rx:["2 × 30 sec","2 × 40 sec","3 × 40 sec"] },
+      { name:"Inside-Outside Taps", cue:"Quick touches, keep the ball close, eyes up between touches.", rx:["2 × 30 sec","2 × 40 sec","3 × 40 sec"] },
+      { name:"Drag Turns, both feet", cue:"Drag the ball behind your standing leg, open your hips as you turn.", rx:["2 × 10/foot","2 × 12/foot","3 × 12/foot"] },
+      { name:"V-Cuts", cue:"Push the ball at an angle, plant your foot, cut it back the other way.", rx:["2 × 10","2 × 12","3 × 12"] },
+      { name:"Cruyff Turns, both sides", cue:"Fake the pass, drag the ball behind your standing leg, spin away.", rx:["2 × 10/side","2 × 12/side","3 × 12/side"] }
+    ]},
+    { key:"combos", name:"Dribbling Combos & Change of Direction", drills:[
+      { name:"Figure-8 Dribble around 2 markers", cue:"Set your 2 markers (shoes or water bottles) about 3 yards apart and weave a figure-8.", rx:["6 laps","8 laps","10 laps, faster"] },
+      { name:"Scissor + Push Combo", cue:"Step over the ball without touching it, then push it away with the outside foot.", rx:["2 × 8/side","2 × 10/side","3 × 10/side"] },
+      { name:"Stepover Combo into a Sprint", cue:"Two quick stepovers, then explode away in a new direction.", rx:["2 × 8/side","2 × 10/side","3 × 10/side"] },
+      { name:"Body Feint + Explode Away", cue:"Shift your shoulders one way, push off, and accelerate the other way.", rx:["2 × 8/side","2 × 10/side","3 × 10/side"] }
+    ]},
+    { key:"weakfoot", name:"Weak-Foot Mastery", drills:[
+      { name:"Weak-Foot Juggling (count your best streak)", cue:"Weak foot only — count your longest streak without the ball touching the ground.", rx:["Beat your record, 3 tries","Beat your record, 4 tries","Beat your record, 5 tries"] },
+      { name:"Weak-Foot Push-Pass & Receive against a wall", cue:"Pass off a wall or garage door, cushion the return touch with your weak foot.", rx:["2 × 20 reps","2 × 25 reps","3 × 25 reps"] },
+      { name:"Weak-Foot Only Drag Turns", cue:"Same drag turn technique as Close Control day, weak foot only.", rx:["2 × 10","2 × 12","3 × 12"] }
+    ]}
+  ];
+
+  var SPEED_FOCI = [
+    { key:"agility", name:"Change of Direction & Reactive Agility", drills:[
+      { name:"Solo 5-10-5 Shuttle", cue:"Set your 2 markers 5 yards apart. Sprint 5 yards, touch down, sprint 10 yards back past start, touch down, sprint 5 yards back to finish.", rx:["4 reps","5 reps","6 reps"] },
+      { name:"Diagonal Cutting Runs", cue:"Sprint on a diagonal, plant your outside foot, cut hard to a new diagonal.", rx:["3 × 4 cuts/side","3 × 5 cuts/side","4 × 5 cuts/side"] },
+      { name:"Single-Leg Lateral Hop into Sprint", cue:"Hop laterally off one leg, stick the landing, then sprint forward.", rx:["2 × 4/side","2 × 5/side","3 × 5/side"] }
+    ]},
+    { key:"mobility", name:"Mobility & Flexibility Flow", drills:[
+      { name:"90/90 Hip Switches", cue:"Rotate both knees from one side to the other, keep your chest tall.", rx:["2 × 8/side","2 × 10/side","3 × 10/side"] },
+      { name:"Couch Stretch (stairs or wall)", cue:"Back foot up on a stair or against the wall, squeeze the glute, sink the hips forward.", rx:["45 sec/side","45 sec/side","60 sec/side"] },
+      { name:"Pigeon Pose", cue:"Front shin angled across your body, sink your hips down evenly.", rx:["45 sec/side","45 sec/side","60 sec/side"] },
+      { name:"Hamstring Flossing with a towel or band", cue:"Loop it around your foot, slowly straighten and bend the knee.", rx:["2 × 8/side","2 × 10/side","3 × 10/side"] },
+      { name:"Thoracic Spine Rotations", cue:"On all fours, thread one arm under and rotate it up toward the ceiling.", rx:["2 × 8/side","2 × 10/side","3 × 10/side"] }
+    ]}
+  ];
+
+  var PHASES = [
+    { name:"Foundation", weeks:"Weeks 1–4", blurb:"Movement quality first — soft landings, activation, and clean sprint mechanics." },
+    { name:"Power", weeks:"Weeks 5–8", blurb:"Plyometric intensity goes up, core work gets loaded, first-step acceleration gets sharper." },
+    { name:"Performance", weeks:"Weeks 9–12", blurb:"Reactive, game-speed work at higher volume. Held as the maintenance level after Week 12." }
+  ];
+
+  /* ============================== STATE / STORAGE ============================== */
+
+  var STORE_KEY = "groundwork_v1";
+  var store = { startDate:null, logs:{} };
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) store = JSON.parse(raw);
+  } catch(e) {}
+
+  function persist(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch(e) {}
+  }
+
+  function pad(n){ return (n<10 ? "0" : "") + n; }
+  function iso(d){ return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()); }
+  function fromIso(s){ var p = s.split("-"); return new Date(+p[0], +p[1]-1, +p[2]); }
+  function startOfDay(d){ var x = new Date(d); x.setHours(0,0,0,0); return x; }
+  function addDays(d, n){ var x = new Date(d); x.setDate(x.getDate()+n); return x; }
+  function daysBetween(a,b){ return Math.round((startOfDay(b) - startOfDay(a)) / 86400000); }
+  function dowMon0(d){ return (d.getDay()+6)%7; }
+  function mondayOf(d){ return addDays(startOfDay(d), -dowMon0(d)); }
+
+  var today = startOfDay(new Date());
+
+  if (!store.startDate) {
+    store.startDate = iso(mondayOf(today));
+    persist();
+  }
+
+  var selectedDate = today;
+  var visibleMonday = mondayOf(today);
+
+  /* ============================== SCHEDULE ============================== */
+
+  function weekInfo(d){
+    var start = fromIso(store.startDate);
+    var diff = daysBetween(start, d);
+    var weekNumber = Math.floor(diff/7) + 1;
+    if (weekNumber < 1) weekNumber = 1;
+    var phaseIndex = weekNumber<=4 ? 0 : (weekNumber<=8 ? 1 : 2);
+    return { weekNumber: weekNumber, phaseIndex: phaseIndex, beforeStart: diff < 0 };
+  }
+
+  function mod(n,m){ return ((n%m)+m)%m; }
+
+  function buildDay(d){
+    var info = weekInfo(d);
+    var week = info.weekNumber, phase = info.phaseIndex;
+    var dow = dowMon0(d);
+    var blocks = [];
+
+    if (dow===0 || dow===2 || dow===4){
+      var off = dow===0 ? 0 : (dow===2 ? 1 : 2);
+      var key = CORE_ORDER[mod(week-1+off, 4)];
+      var tpl = CORE_TEMPLATES[key];
+      blocks.push({ id:"core", icon:"ic-bolt", title:"Core & Plyo — " + tpl.name, sub:tpl.blurb + " · Template " + key, sections: tpl.sections.map(function(s){
+        var tag = s.title==="Cool Down" ? "stretch tutorial proper form" : "exercise proper form tutorial";
+        return { title:s.title, tag:tag, items:s.items.map(function(it,i){ return { name:it.name, cue:it.cue, rx:it.rx[phase] }; }) };
+      })});
+    } else if (dow===1){
+      var bf = BALL_FOCI[mod(week-1, 3)];
+      blocks.push({ id:"ball", icon:"ic-ball", title:"Ball Mastery — " + bf.name, sub:"Pre-practice · 45–60 min · solo", sections:[
+        { title:"Warm-Up Touches", tag:"ball mastery youth soccer training video", items:[ { name:"Light juggling / rolling", cue:"Get a feel for the ball.", rx:"5 min" } ]},
+        { title:"Skill Focus", tag:"ball mastery youth soccer training video", items: bf.drills.map(function(it){ return { name:it.name, cue:it.cue || "", rx:it.rx[phase] }; }) },
+        { title:"Free Play", noDemo:true, items:[ { name:"Freestyle — no pressure", cue:"Try new tricks, have fun with it.", rx:"5 min" } ]}
+      ]});
+    } else if (dow===3){
+      var sf = SPEED_FOCI[mod(week-1, 2)];
+      var sfTag = sf.key==="agility" ? "agility drill training video youth athlete" : "stretch mobility tutorial youth athlete";
+      blocks.push({ id:"speed", icon:"ic-speed", title:"Explosive Speed & Flexibility", sub:"Pre-practice · ~20–25 min · solo", callout:"Quality over fatigue — these are max-effort, not conditioning. If a sprint starts looking slow or sloppy, call that section done early and move on.", sections:[
+        { title:"Prime the System", tag:"plyometric sprint drill training video youth athlete", items: FAST_TWITCH.prime.map(function(it){ return { name:it.name, cue:it.cue, rx:it.rx[phase] }; }) },
+        { title:"First-Step Acceleration", tag:"acceleration sprint start drill training video youth athlete", items: FAST_TWITCH.firstStep.map(function(it){ return { name:it.name, cue:it.cue, rx:it.rx[phase] }; }) },
+        { title:"Elastic Power", tag:"plyometric sprint drill training video youth athlete", items: FAST_TWITCH.elastic.map(function(it){ return { name:it.name, cue:it.cue, rx:it.rx[phase] }; }) },
+        { title:sf.name, tag:sfTag, items: sf.drills.map(function(it){ return { name:it.name, cue:it.cue || "", rx:it.rx[phase] }; }) },
+        { title:"Cool Down", tag:"stretch tutorial proper form", items:[ { name:"Static stretch & breathing", cue:"Slow it down before practice.", rx:"5 min" } ]}
+      ]});
+    } else if (dow===5){
+      blocks.push({ id:"game", icon:"ic-trophy", title:"Game Day / Active Recovery", sub:"Flex day — adjust to your schedule", sections:[
+        { title:"If You Have a Game", noDemo:true, items:[ { name:"Warm up, compete, cool down with your team", cue:"", rx:"—" } ]},
+        { title:"If No Game", noDemo:true, items:[
+          { name:"Easy bike, jog, or walk", cue:"Keep it light — conversational effort.", rx:"15–20 min" },
+          { name:"Full-body stretch flow", cue:"Hips, hamstrings, calves, shoulders.", rx:"10 min" }
+        ]}
+      ]});
+    } else {
+      blocks.push({ id:"rest", icon:"ic-moon", title:"Full Rest", sub:"", sections:[], rest:true });
+    }
+
+    return { key: iso(d), date:d, week:week, phase:phase, dow:dow, blocks:blocks, beforeStart: info.beforeStart };
+  }
+
+  function dayTotals(dayData){
+    var total=0, done=0;
+    var log = store.logs[dayData.key] || {};
+    dayData.blocks.forEach(function(b){
+      b.sections.forEach(function(s){
+        s.items.forEach(function(it, i){
+          total++;
+          var id = b.id + "__" + s.title + "__" + i;
+          if (log[id]) done++;
+        });
+      });
+    });
+    return { total:total, done:done };
+  }
+
+  function isRequiredDow(dow){ return dow>=0 && dow<=4; } // Mon-Fri
+
+  function computeStreak(){
+    var d = new Date(today);
+    var streak = 0;
+    var guard = 0;
+    while (guard < 120){
+      guard++;
+      var info = weekInfo(d);
+      if (info.beforeStart) break;
+      var dow = dowMon0(d);
+      if (isRequiredDow(dow)){
+        var dd = buildDay(d);
+        var t = dayTotals(dd);
+        if (t.total>0 && t.done===t.total){
+          streak++;
+        } else if (iso(d)===iso(today)) {
+          // today not finished yet doesn't break an existing streak
+        } else {
+          break;
+        }
+      }
+      d = addDays(d, -1);
+    }
+    return streak;
+  }
+
+  var DAY_LABELS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  var DTYPE_SHORT = { core:"Core", run:"Run", ball:"Ball", speed:"Speed", game:"Game", rest:"Rest" };
+
+  /* ============================== RENDER ============================== */
+
+  var elPhaseSub = document.getElementById("phase-sub");
+  var elPhaseRow = document.getElementById("phase-row");
+  var elStreakNum = document.getElementById("streak-num");
+  var elWeekLabel = document.getElementById("week-label");
+  var elWeekStrip = document.getElementById("week-strip");
+  var elDetail = document.getElementById("detail");
+  var elPhaseGrid = document.getElementById("phase-grid");
+
+  function ringSvg(frac, selected){
+    var r = 14, c = 2*Math.PI*r;
+    var off = c * (1-frac);
+    var trackColor = selected ? "rgba(255,255,255,0.35)" : "var(--line)";
+    var barColor = selected ? "#ffffff" : "var(--good)";
+    return '<svg viewBox="0 0 34 34"><circle class="ring-track" cx="17" cy="17" r="'+r+'" fill="none" stroke="'+trackColor+'" stroke-width="3"/>' +
+      '<circle cx="17" cy="17" r="'+r+'" fill="none" stroke="'+barColor+'" stroke-width="3" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'"/></svg>';
+  }
+
+  function renderPhaseRow(){
+    var info = weekInfo(today);
+    elPhaseSub.textContent = "Week " + info.weekNumber + " · " + PHASES[info.phaseIndex].name + (info.weekNumber>12 ? " (Maintenance)" : "");
+    elPhaseRow.innerHTML = PHASES.map(function(p,i){
+      return '<span class="phase-chip'+(i===info.phaseIndex?' active':'')+'">'+p.name+'</span>';
+    }).join("");
+  }
+
+  function renderPhaseGrid(){
+    var info = weekInfo(today);
+    elPhaseGrid.innerHTML = PHASES.map(function(p,i){
+      return '<div class="phase-card'+(i===info.phaseIndex?' current':'')+'"><div class="pk">'+p.weeks+'</div><h4>'+p.name+'</h4><p>'+p.blurb+'</p></div>';
+    }).join("");
+  }
+
+  function renderWeekLabel(){
+    var mondayIsThis = iso(visibleMonday) === iso(mondayOf(today));
+    if (mondayIsThis) { elWeekLabel.textContent = "This Week"; return; }
+    var info = weekInfo(visibleMonday);
+    elWeekLabel.textContent = "Week " + info.weekNumber;
+  }
+
+  function renderWeekStrip(){
+    var html = "";
+    for (var i=0;i<7;i++){
+      var d = addDays(visibleMonday, i);
+      var dayData = buildDay(d);
+      var t = dayTotals(dayData);
+      var frac = t.total>0 ? t.done/t.total : (dayData.blocks[0] && dayData.blocks[0].rest ? 1 : 0);
+      var isToday = iso(d)===iso(today);
+      var isSel = iso(d)===iso(selectedDate);
+      var iconId = dayData.blocks[0] ? dayData.blocks[0].icon : "ic-moon";
+      var typeLabel = dayData.blocks.map(function(b){ return DTYPE_SHORT[b.id]; }).join(" + ");
+      html += '<button class="day-card'+(isToday?' is-today':'')+(isSel?' is-selected':'')+'" data-date="'+iso(d)+'">' +
+        '<span class="dow">'+DAY_LABELS[i]+'</span>' +
+        '<span class="dnum">'+d.getDate()+'</span>' +
+        '<span class="ring-wrap">'+ringSvg(frac, isSel)+'<span class="ring-icon"><svg><use href="#'+iconId+'"/></svg></span></span>' +
+        '<span class="dtype">'+typeLabel+'</span>' +
+        '</button>';
+    }
+    elWeekStrip.innerHTML = html;
+    Array.prototype.forEach.call(elWeekStrip.querySelectorAll(".day-card"), function(btn){
+      btn.addEventListener("click", function(){
+        selectedDate = fromIso(btn.getAttribute("data-date"));
+        renderAll();
+      });
+    });
+  }
+
+  function demoUrl(name, tag){
+    var clean = name.replace(/&amp;/g,"and").replace(/<[^>]+>/g,"").replace(/\([^)]*\)/g,"").replace(/[→—]/g," ").replace(/\s+/g," ").trim();
+    return "https://www.youtube.com/results?search_query=" + encodeURIComponent(clean + " " + (tag || "exercise proper form tutorial"));
+  }
+
+  var SKIP_DEMO = { "—":true };
+
+  function itemRow(blockId, section, item, index, log){
+    var id = blockId + "__" + section.title + "__" + index;
+    var checked = !!log[id];
+    var cueHtml = item.cue ? '<div class="icue">'+item.cue+'</div>' : "";
+    var demoHtml = (section.noDemo || SKIP_DEMO[item.rx]) ? "" : '<a class="demo-link" href="'+demoUrl(item.name, section.tag)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg style="width:11px;height:11px;vertical-align:-1px"><use href="#ic-play"/></svg> Watch a demo</a>';
+    return '<label class="item'+(checked?' done':'')+'">' +
+      '<input type="checkbox" class="check" data-id="'+id+'" '+(checked?'checked':'')+'><svg style="display:none"><use href="#ic-check"/></svg>' +
+      '<span class="item-body"><span class="iname">'+item.name+'</span>'+cueHtml+demoHtml+'</span>' +
+      '<span class="irx num">'+item.rx+'</span>' +
+      '</label>';
+  }
+
+  function renderDetail(){
+    var dayData = buildDay(selectedDate);
+    var log = store.logs[dayData.key] || {};
+    var t = dayTotals(dayData);
+    var dow = dayData.dow;
+    var dateLabel = selectedDate.toLocaleDateString(undefined, { weekday:"long", month:"long", day:"numeric" });
+
+    var head = '<div class="detail-head"><div><h2>'+DAY_LABELS[dow]+'</h2><div class="meta">'+dateLabel+' · Week '+dayData.week+' · '+PHASES[dayData.phase].name+'</div></div>';
+    if (t.total>0){
+      var pct = Math.round((t.done/t.total)*100);
+      head += '<div class="day-progress"><div class="bar"><i style="width:'+pct+'%"></i></div><span class="num num">'+t.done+'/'+t.total+'</span></div>';
+    }
+    head += '</div>';
+
+    var blocksHtml = "";
+    if (dayData.blocks.length===1 && dayData.blocks[0].rest){
+      blocksHtml = '<div class="note-card"><svg><use href="#ic-moon"/></svg><h3>Full Rest</h3><p>Sleep, hydrate, eat well. No training today — recovery is part of the program.</p></div>';
+    } else {
+      dayData.blocks.forEach(function(block){
+        var sectionsHtml = block.sections.map(function(s){
+          var itemsHtml = s.items.map(function(it,i){ return itemRow(block.id, s, it, i, log); }).join("");
+          return '<div class="section"><div class="section-title">'+s.title+'</div>'+itemsHtml+'</div>';
+        }).join("");
+        var calloutHtml = block.callout ? '<div class="callout"><svg><use href="#ic-warn"/></svg><span>'+block.callout+'</span></div>' : "";
+        blocksHtml += '<div class="block" data-block="'+block.id+'">' +
+          '<div class="block-head"><div class="block-icon"><svg><use href="#'+block.icon+'"/></svg></div>' +
+          '<div><div class="block-title">'+block.title+'</div><div class="block-sub">'+block.sub+'</div></div></div>' +
+          calloutHtml +
+          sectionsHtml +
+          '</div>';
+      });
+    }
+
+    elDetail.innerHTML = head + blocksHtml;
+
+    Array.prototype.forEach.call(elDetail.querySelectorAll(".check"), function(cb){
+      cb.addEventListener("change", function(){
+        var id = cb.getAttribute("data-id");
+        if (!store.logs[dayData.key]) store.logs[dayData.key] = {};
+        store.logs[dayData.key][id] = cb.checked;
+        persist();
+        renderAll();
+      });
+    });
+  }
+
+  function renderStreak(){
+    elStreakNum.textContent = String(computeStreak());
+  }
+
+  function renderAll(){
+    renderPhaseRow();
+    renderPhaseGrid();
+    renderWeekLabel();
+    renderWeekStrip();
+    renderDetail();
+    renderStreak();
+  }
+
+  /* ============================== NAV / SETTINGS ============================== */
+
+  document.getElementById("week-prev").addEventListener("click", function(){
+    visibleMonday = addDays(visibleMonday, -7);
+    renderAll();
+  });
+  document.getElementById("week-next").addEventListener("click", function(){
+    visibleMonday = addDays(visibleMonday, 7);
+    renderAll();
+  });
+  document.getElementById("week-today").addEventListener("click", function(){
+    visibleMonday = mondayOf(today);
+    selectedDate = today;
+    renderAll();
+  });
+
+  var backdrop = document.getElementById("settings-backdrop");
+  var startInput = document.getElementById("start-date-input");
+  document.getElementById("settings-btn").addEventListener("click", function(){
+    startInput.value = store.startDate;
+    backdrop.style.display = "flex";
+  });
+  document.getElementById("settings-cancel").addEventListener("click", function(){
+    backdrop.style.display = "none";
+  });
+  backdrop.addEventListener("click", function(e){
+    if (e.target === backdrop) backdrop.style.display = "none";
+  });
+  document.getElementById("settings-save").addEventListener("click", function(){
+    if (startInput.value){
+      store.startDate = iso(mondayOf(fromIso(startInput.value)));
+      persist();
+      backdrop.style.display = "none";
+      renderAll();
+    }
+  });
+
+  renderAll();
+})();
+</script>
